@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "../globals.css";
 
 export const metadata: Metadata = {
-	title: "Login",
-	description: "Login to application using WorldID",
+	title: "Vote",
+	description: "Vote for your favorite candidate",
 };
 
 export default function RootLayout({
