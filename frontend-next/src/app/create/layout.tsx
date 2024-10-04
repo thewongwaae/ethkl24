@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "../globals.css";
+import Header from "../../components/Header";
 
 export const metadata: Metadata = {
-  title: "Voting App",
-  description: "Web3 voting solution",
+  title: "Create Voting",
+  description: "Create voting room",
 };
 
 export default function RootLayout({
@@ -14,9 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased flex flex-col min-h-screen">
-        <header className="bg-gray-800 text-white p-4 text-center">
-          <h1 className="text-2xl font-bold">Vote App</h1>
-        </header>
+        <Header title="Create Vote" />
         <main className="flex-grow flex items-center justify-center">
           {children}
         </main>
