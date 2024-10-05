@@ -5,7 +5,7 @@ import { ethers } from 'ethers';
 // Create the context
 const WalletContext = createContext(null);
 
-const CONTRACT_ADDRESS = "0x5155206b102e5d324ba5443c548abbd46414e685"; // Deployed contract address
+const CONTRACT_ADDRESS = "0xD4A961f4ab01Fb44A3569cB395E567E3d845aDdb"; // Deployed contract address
 const contractABI = require("../abi.json");
 // Create a provider component
 export const WalletProvider = ({ children }) => {
