@@ -5,7 +5,8 @@ import { ethers } from 'ethers';
 // Create the context
 const WalletContext = createContext(null);
 
-const CONTRACT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // Deployed contract address
+const CONTRACT_ADDRESS = "0x5155206b102e5d324ba5443c548abbd46414e685"; // Deployed contract address
+const contractABI = require("../abi.json");
 // Create a provider component
 export const WalletProvider = ({ children }) => {
 	const [walletAddress, setWalletAddress] = useState(null);
@@ -46,7 +47,7 @@ export const WalletProvider = ({ children }) => {
 	const initializeContract = async (provider, account) => {
 		// console.log("provider", provider);
 		const signer = await provider.getSigner();
-		const contractInstance = new ethers.Contract(CONTRACT_ADDRESS, contractABI.abi, signer);
+		const contractInstance = new ethers.Contract(CONTRACT_ADDRESS, contractABI, signer);
 		setContract(contractInstance);
 	};
 

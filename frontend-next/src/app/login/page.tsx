@@ -10,8 +10,6 @@ export default function VerificationPage() {
   const handleSuccess = async (data) => {
     // Send the proof data to your backend for verification
     console.log('Success:', data);
-    
-    
 
     // Send proof to backend
     const response = await fetch('/api/verifyProof', {

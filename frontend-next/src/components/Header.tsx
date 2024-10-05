@@ -13,6 +13,12 @@ export default function Header({ title }: HeaderProps) {
   const router = useRouter();
   const { walletAddress, connectWallet, disconnectWallet, contract } = useWalletContext();
 
+  const formatAddress = (address: string): string => {
+	if (!address) return '';
+	if (address.length <= 8) return address;
+	return `${address.slice(0, 4)}...${address.slice(-4)}`;
+  };
+
   const handleUsernameClick = useCallback(() => {
     console.log("Username clicked");
   }, []);
@@ -45,7 +51,7 @@ export default function Header({ title }: HeaderProps) {
         className="font-bold transition-transform transform hover:scale-110 hover:text-gray-300 cursor-pointer ml-auto"
         onClick={connectWallet}
       >
-				{walletAddress ? walletAddress : "Connect wallet"} 
+				{walletAddress ? walletAddress : "Connect wallet"}
       </h1>
     </header>
   );
