@@ -87,7 +87,7 @@ contract Vote {
 		delete addressToVoteId[msg.sender];
 	}
 
-	function getVotes(uint256 _groupId) public view returns (string[] memory, uint256[] memory) {
+	function getVotes(uint256 _groupId) public view returns (uint256, string[] memory, uint256[] memory) {
 		require(_groupId > 0 && _groupId <= groups.length, "Error: Invalid Group ID");  // Check for valid Group ID
         require(addressToGroupId[msg.sender] == _groupId, "Error: User not in this group");  // Check if user is in the group
 
@@ -99,8 +99,8 @@ contract Vote {
             voteTitles[i] = groupRef.voteTitle[i];  // Populate titles array
 			voteAmount[i] = groupRef.voteAmount[i];
         }
-
-        return (voteTitles, voteAmount);	
+		
+        return (addressToVoteId[msg.sender], voteTitles, voteAmount);
 	}
 }
 
