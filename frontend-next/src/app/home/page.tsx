@@ -8,12 +8,12 @@ export default function Home() {
   const router = useRouter();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
-  // const [voteId, setVoteId] = useState("");
+  const [voteId, setVoteId] = useState("");
   const [roomName, setRoomName] = useState("");
   const [description, setDescription] = useState("");
   const [options, setOptions] = useState("");
 
-  const { walletAddress, connectWallet, disconnectWallet, contract, voteId, setVoteId, groupId, setGroupId } = useWalletContext();
+  const { walletAddress, connectWallet, disconnectWallet, contract } = useWalletContext();
 
   const handleJoinVote = () => {
     if (voteId.trim()) {

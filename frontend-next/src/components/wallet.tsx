@@ -12,8 +12,6 @@ export const WalletProvider = ({ children }) => {
 	const [walletAddress, setWalletAddress] = useState(null);
 	const [contract, setContract] = useState<ethers.Contract | null>(null);
 	const [provider, setProvider] = useState<ethers.providers.Web3Provider | null>(null);
-	const [groupId, setGroupId] = useState(null);
-	const [voteId,setVoteId] = useState(null);
 
 
 	// Function to connect the wallet
@@ -76,7 +74,7 @@ export const WalletProvider = ({ children }) => {
 	}
 
 	return (
-		<WalletContext.Provider value={{ walletAddress, connectWallet, disconnectWallet, contract, voteId, setVoteId, groupId, setGroupId }}>
+		<WalletContext.Provider value={{ walletAddress, connectWallet, disconnectWallet, contract }}>
 			{children}
 		</WalletContext.Provider>
 	);
