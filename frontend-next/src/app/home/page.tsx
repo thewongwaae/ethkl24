@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useWalletContext } from "@/components/wallet";
 
 export default function Home() {
   const router = useRouter();
@@ -10,6 +11,8 @@ export default function Home() {
   const [voteId, setVoteId] = useState("");
   const [roomName, setRoomName] = useState("");
   const [description, setDescription] = useState("");
+	
+  const { walletAddress, connectWallet, disconnectWallet, contract } = useWalletContext();
 
   const handleJoinVote = () => {
     if (voteId.trim()) {

@@ -2,6 +2,8 @@
 
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { useWalletContext } from "./wallet";
+
 
 interface HeaderProps {
   title: string;
@@ -9,6 +11,7 @@ interface HeaderProps {
 
 export default function Header({ title }: HeaderProps) {
   const router = useRouter();
+  const { walletAddress, connectWallet, disconnectWallet, contract } = useWalletContext();
 
   const handleUsernameClick = useCallback(() => {
     console.log("Username clicked");
@@ -40,9 +43,9 @@ export default function Header({ title }: HeaderProps) {
       {/* Username Section on the right */}
       <h1
         className="font-bold transition-transform transform hover:scale-110 hover:text-gray-300 cursor-pointer ml-auto"
-        onClick={handleUsernameClick}
+        onClick={connectWallet}
       >
-        Username
+				{walletAddress ? walletAddress : "Connect wallet"} 
       </h1>
     </header>
   );
