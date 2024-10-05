@@ -3,8 +3,8 @@ import "../globals.css";
 import Header from "../../components/Header";
 
 export const metadata: Metadata = {
-  title: "Create Voting",
-  description: "Create voting room",
+  title: "Create Group",
+  description: "Create room",
 };
 
 export default function RootLayout({

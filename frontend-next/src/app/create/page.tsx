@@ -35,7 +35,7 @@ export default function Join() {
   };
 
   return (
-    <div className="flex flex-col space-y-8 items-center justify-center min-h-screen">
+    <div className="flex flex-col space-y-8 items-center justify-center">
       <input
         type="text"
         value={voteTopic}
