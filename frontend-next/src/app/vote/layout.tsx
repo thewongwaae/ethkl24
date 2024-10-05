@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "../globals.css";
+import Header from "../../components/Header";
 
 export const metadata: Metadata = {
-	title: "Login",
-	description: "Login to application using WorldID",
+	title: "Vote",
+	description: "Vote for your favorite candidate",
 };
 
 export default function RootLayout({
@@ -14,7 +15,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        {children}
+        <Header title="Cast Your Vote!" />
+        <main className="flex-grow flex items-center justify-center">
+          {children}
+        </main>
       </body>
     </html>
   );
