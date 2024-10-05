@@ -17,7 +17,7 @@ export default function Join() {
       if (response.status === 200) {
         const data = await response.json();
         const { voteId } = data;
-        router.push(`/vote/${voteId}`);
+        router.push(`/group/${voteId}`);
       } else if (response.status === 404) {
         console.log("Vote group does not exist");
       }
@@ -33,13 +33,13 @@ export default function Join() {
         value={roomId}
         onChange={handleJoinChange}
         className="bg-gray-200 text-black text-lg font-bold py-4 px-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Enter Room ID"
+        placeholder="Enter Group ID"
       />
       <button
         className="bg-green-500 text-white text-lg font-bold py-4 px-8 rounded-lg hover:bg-green-600 transition duration-300"
         onClick={handleCreate}
       >
-        Enter Room
+        Enter Group
       </button>
     </div>
   );

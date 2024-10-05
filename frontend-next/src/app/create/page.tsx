@@ -41,13 +41,13 @@ export default function Join() {
         value={voteTopic}
         onChange={handleCreateChange}
         className="bg-gray-200 text-black text-lg font-bold py-4 px-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Enter Vote Topic"
+        placeholder="Enter Group Name"
       />
       <button
         className="bg-green-500 text-white text-lg font-bold py-4 px-8 rounded-lg hover:bg-green-600 transition duration-300"
         onClick={handleCreate}
       >
-        Create Room
+        Create Group
       </button>
     </div>
   );

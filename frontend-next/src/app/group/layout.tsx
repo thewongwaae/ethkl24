@@ -3,8 +3,8 @@ import "../globals.css";
 import Header from "../../components/Header";
 
 export const metadata: Metadata = {
-  title: "Create Group",
-  description: "Create room",
+	title: "Group",
+	description: "View votes available within your group",
 };
 
 export default function RootLayout({
@@ -14,8 +14,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased flex flex-col min-h-screen">
-        <Header title="Create Group" />
+      <body className="antialiased">
+        <Header title="Choose your vote topic!" />
         <main className="flex-grow flex items-center justify-center">
           {children}
         </main>

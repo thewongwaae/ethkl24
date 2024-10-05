@@ -12,6 +12,11 @@ const nextConfig = {
         destination: '/home',
         permanent: true,
       },
+      {
+        source: '/group',
+        destination: '/join',
+        permanent: true,
+      },
     ];
   },
 };
