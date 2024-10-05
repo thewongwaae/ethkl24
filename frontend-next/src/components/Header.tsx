@@ -51,7 +51,7 @@ export default function Header({ title }: HeaderProps) {
         className="font-bold transition-transform transform hover:scale-110 hover:text-gray-300 cursor-pointer ml-auto"
         onClick={connectWallet}
       >
-				{walletAddress ? walletAddress : "Connect wallet"}
+				{formatAddress(walletAddress) ? formatAddress(walletAddress) : "Connect wallet"}
       </h1>
     </header>
   );
