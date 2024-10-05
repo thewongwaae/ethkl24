@@ -79,7 +79,7 @@ contract Vote {
 
 	}
 
-	function removeVote() public {
+	function removeVote() public returns (uint256) {
 		require(addressToGroupId[msg.sender] != 0, "Error: User not in any group");  // Check if user is in any group
         require(addressToVoteId[msg.sender] != 0, "Error: User has not voted");  // Check if user has voted
 		uint256 groupId = addressToGroupId[msg.sender];
