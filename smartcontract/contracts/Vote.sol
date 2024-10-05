@@ -13,13 +13,16 @@ contract Vote {
 		uint256 groupId;
 		uint256 voteOptionId;
 		string title;
-	};
+	}
 
 	struct Group {
-		VoteOption[] voteOptions;
+
+		uint256[] voteAmount;
+		uint256[] voteOptionId;
+		string[] voteTitle;
 		string title;
 		string description;
-	};
+	}
 
 	constructor() {
 		groupIdCursor = 1;
@@ -35,23 +38,28 @@ contract Vote {
         return (true, groupId, userGroup.title, userGroup.description);
 	}
 
-	function createGroup(string memory _title, string memory _description, string[] memory optionTitles) public returns (uint256, string memory, string memory, string[] memory) {
+	function createGroup(string memory _title, string memory _description, string[] memory optionTitles) public {
 		require(bytes(_title).length > 0, "Error: Title cannot be empty");
         require(bytes(_description).length > 0, "Error: Description cannot be empty");
         require(optionTitles.length > 0, "Error: At least one option must be provided");
-		VoteOption[] memory newVoteOptions = new VoteOption[](optionTitles.length);
-
-		for (uint256 i = 0; i < optionTitles.length; i++) {
-            newVoteOptions[i] = VoteOption(0, groupIdCursor, i + 1, optionTitles[i]);
-        }
-
+		uint256[] memory voteAmount = new uint256[](optionTitles.length);
+		uint256[] memory voteOptionId = new uint256[](optionTitles.length);
+		string[] memory voteTitle = new string[](optionTitles.length);
 		Group memory newGroup = Group({
-			voteOptions: newVoteOptions,
+			voteAmount: voteAmount,
+			voteOptionId: voteOptionId,
+			voteTitle: voteTitle,
 			title: _title,
 			description:_description 
     	});
+
+		for (uint256 i = 0; i < optionTitles.length; i++) {
+			newGroup.voteAmount[i] = 0;
+			newGroup.voteOptionId[i] = i;
+			newGroup.voteTitle[i] = optionTitles[i];
+		}
 		groups.push(newGroup);
-		return (groupIdCursor++, newGroup.title, newGroup.description, newVoteOptions); 
+		groupIdCursor++;
 	}
 
 	function userJoinGroup(uint256 _groupId) public {
@@ -64,9 +72,9 @@ contract Vote {
 		require(_groupId > 0 && _groupId <= groups.length, "Error: Invalid Group ID");  // Check for valid Group ID
 		require(addressToGroupId[msg.sender] == _groupId, "Error: User not in the specified group");  // Check if user is in the group
 		require(addressToVoteId[msg.sender] == 0, "Error: User has already voted");
-		require(groups[addressToGroupId[msg.sender]].voteOptions.length >= _voteId && _voteId != 0, "Error: invalid vote id");
+		require(groups[addressToGroupId[msg.sender]].voteAmount.length >= _voteId && _voteId != 0, "Error: invalid vote id");
         addressToVoteId[msg.sender] = _voteId;  // Associate user with the vote ID
-		groups[_groupId].voteOptions[_voteId].voteAmount++;
+		groups[_groupId].voteAmount[_voteId]++;
 
 	}
 
@@ -75,24 +83,24 @@ contract Vote {
         require(addressToVoteId[msg.sender] != 0, "Error: User has not voted");  // Check if user has voted
 		uint256 groupId = addressToGroupId[msg.sender];
 		uint256 voteId = addressToVoteId[msg.sender];
-		groups[groupId].voteOptions[voteId].voteAmount--;
+		groups[groupId].voteAmount[voteId]--;
 		delete addressToVoteId[msg.sender];
 	}
 
-	function getVotes(uint256 _groupId) view returns (string[] memory, uint256[] memory) {
+	function getVotes(uint256 _groupId) public view returns (string[] memory, uint256[] memory) {
 		require(_groupId > 0 && _groupId <= groups.length, "Error: Invalid Group ID");  // Check for valid Group ID
         require(addressToGroupId[msg.sender] == _groupId, "Error: User not in this group");  // Check if user is in the group
 
         Group storage groupRef = groups[_groupId];  // Adjust for 0-based indexing
-        string[] memory voteTitles = new string[](groupRef.voteOptions.length);  // Create array to hold titles
-		uint256[] memory voteAmount = new uint256[](groupRef.voteOptions.length);
+        string[] memory voteTitles = new string[](groupRef.voteAmount.length);  // Create array to hold titles
+		uint256[] memory voteAmount = new uint256[](groupRef.voteAmount.length);
 
-        for (uint256 i = 0; i < groupRef.voteOptions.length; i++) {
-            voteTitles[i] = groupRef.voteOptions[i].title;  // Populate titles array
-			voteAmount[i] = groupRef.voteOptions[i].voteAmount;
+        for (uint256 i = 0; i < groupRef.voteAmount.length; i++) {
+            voteTitles[i] = groupRef.voteTitle[i];  // Populate titles array
+			voteAmount[i] = groupRef.voteAmount[i];
         }
 
-        return (voteTitles, voteAmounts);	
+        return (voteTitles, voteAmount);	
 	}
 }
 
