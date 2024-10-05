@@ -11,7 +11,7 @@ interface HeaderProps {
 
 export default function Header({ title }: HeaderProps) {
   const router = useRouter();
-  const { walletAddress, connectWallet, disconnectWallet, contract } = useWalletContext();
+  const { walletAddress, connectWallet, disconnectWallet, contract, voteId, setVoteId, groupId, setGroupId } = useWalletContext();
 
   const formatAddress = (address: string): string => {
 	if (!address) return '';

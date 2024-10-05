@@ -1,21 +1,30 @@
+
+// app/layout.tsx
 import type { Metadata } from "next";
 import "../globals.css";
+import { WalletProvider } from "@/components/wallet";
+
+import { headers } from "next/headers"; // added
 
 export const metadata: Metadata = {
-	title: "Login",
-	description: "Login to application using WorldID",
+	title: "AppKit Example App",
+	description: "Powered by WalletConnect"
 };
 
 export default function RootLayout({
-  children,
+	children
 }: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <body className="antialiased">
-        {children}
-      </body>
-    </html>
-  );
+		children: React.ReactNode
+	}>) {
+
+	return (
+		<html lang="en">
+			<body>
+				<WalletProvider>
+					{children}	
+				</WalletProvider>
+			</body>
+		</html>
+	)
 }
+import type { Metadata } from "next";

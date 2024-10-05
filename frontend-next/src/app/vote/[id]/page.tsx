@@ -4,6 +4,8 @@ import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import "../../globals.css";
 import "./styles.css";
+import { GetStaticProps } from 'next';
+import { useWalletContext } from "@/components/wallet";
 
 interface Option {
   name: string;
@@ -21,24 +23,30 @@ export default function VotePageRoute() {
   const { id } = useParams();
   const [data, setData] = useState<VoteData | null>(null);
   const [clickedOption, setClickedOption] = useState<string | null>(null);
+  const { walletAddress, connectWallet, disconnectWallet, contract, voteId, setVoteId, groupId, setGroupId } = useWalletContext();
 
-  useEffect(() => {
-    const fetchVote = async () => {
-      try {
-        const response = await fetch(`/api/fetchVote`);
+	useEffect(() => {
+		const fetchVote = async () => {
+			try {
+				if (contract && groupId) {
+					const response = await contract.getVotes(groupId); 
 
-        if (response.ok) {
-          const result = await response.json();
-          setData(result);
-        } else if (response.status === 404) {
-          console.log("Vote group does not exist");
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    };
-    fetchVote();
-  }, [id]);
+					if (response.ok) {
+						const result = await response.json();
+						setData(result);
+					} else if (response.status === 404) {
+						console.log("Vote group does not exist");
+					}
+				} else {
+					console.error("groupId or contract is still null");
+				}
+			} catch (error) {
+				console.error('Error:', error);
+			}
+
+		};
+		fetchVote();
+	}, [id]);
 
   if (!data) {
     return (
