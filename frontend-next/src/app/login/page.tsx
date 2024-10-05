@@ -7,6 +7,24 @@ import { useRouter } from 'next/navigation';
 
 export default function VerificationPage() {
   const router = useRouter();
+
+  const contractAddress = "0x5155206b102e5d324ba5443c548abbd46414e685";
+
+  const contractAbi = [
+    "function castVote(uint256 _voteId, uint256 _groupId) nonpayable",
+    "function createGroup(string _title, string _description, string[] optionTitles) nonpayable",
+    "function removeVote() nonpayable",
+    "constructor() nonpayable",
+    "function userJoinGroup(uint256 _groupId) nonpayable",
+    "function addressToGroupId(address) view returns (uint256)",
+    "function addressToVoteId(address) view returns (uint256)",
+    "function getVotes(uint256 _groupId) view returns (uint256, string[], uint256[])",
+    "function groupIdCursor() view returns (uint256)",
+    "function groups(uint256) view returns (string title, string description)",
+    "function isUserInGroup() view returns (bool, uint256, string, string)"
+  ];
+
+
   const handleSuccess = async (data) => {
     // Send the proof data to your backend for verification
     console.log('Success:', data);
