@@ -6,7 +6,9 @@ import "../../globals.css";
 export default function VotePageRoute() {
   const params = useParams();
   const id = params.id;
-  console.log(id);
+  // CHECK VALIDITY OF ID IN DB
+  // IF VALID, RENDER PAGE
+  // ELSE, RENDER ERROR PAGE
 
   return (
     <div>

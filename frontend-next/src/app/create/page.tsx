@@ -1,16 +1,37 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Join() {
   const [voteTopic, setVoteTopic] = useState("");
+  const router = useRouter();
 
   const handleCreateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setVoteTopic(event.target.value);
   };
 
-  const handleCreate = () => {
-    console.log("Vote Topic:", voteTopic);
+  const handleCreate = async () => {
+    try {
+      const response = await fetch('/api/joinVote', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ voteTopic }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      console.log("Vote ID:", data.VoteId); // SAVE THIS TO DB
+      console.log("Vote Topic:", data.voteTopic); // SAVE THIS TO DB
+      router.push(`/vote/${data.VoteId}`);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (

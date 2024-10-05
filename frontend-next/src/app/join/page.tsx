@@ -1,16 +1,29 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Join() {
   const [roomId, setRoomId] = useState("");
+  const router = useRouter();
 
   const handleJoinChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRoomId(event.target.value);
   };
 
-  const handleCreate = () => {
-    console.log("Room ID:", roomId);
+  const handleCreate = async () => {
+    try {
+      const response = await fetch(`/api/joinVote?id=${roomId}`);
+      if (response.status === 200) {
+        const data = await response.json();
+        const { voteId } = data;
+        router.push(`/vote/${voteId}`);
+      } else if (response.status === 404) {
+        console.log("Vote group does not exist");
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
