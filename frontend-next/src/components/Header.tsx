@@ -21,12 +21,14 @@ export default function Header({ title }: HeaderProps) {
 
   return (
     <header className="bg-gray-800 text-white p-4 flex items-center justify-between">
-      {/* Home Button on the left */}
+      {/* Home Icon on the left */}
       <button
-        className="p-2 border border-white rounded hover:bg-gray-700 transition"
+        className="p-2 rounded hover:bg-gray-700 transition-transform transform hover:scale-110"
         onClick={handleHomeClick}
       >
-        Home
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" className="fill-white">
+          <path d="M21 13v10h-6v-6h-6v6h-6v-10h-3l12-12 12 12h-3zm-1-5.907v-5.093h-3v2.093l3 3z"/>
+        </svg>
       </button>
 
       {/* Title in the center */}

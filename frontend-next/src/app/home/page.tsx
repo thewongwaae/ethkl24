@@ -1,63 +1,61 @@
 "use client";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import VotingModal from "@/components/VotingModal";
+import Toast from "@/components/Toast"; // Import the custom Toast component
+import './styles.css';
 
 export default function Home() {
   const [groupId, setGroupId] = useState("");
-  // State to handle modal open or close
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isInputInvalid, setIsInputInvalid] = useState(false);
+  const [isToastVisible, setIsToastVisible] = useState(false);
   const router = useRouter();
 
-  // Check whether group exist, if yes then route to /vote/<group_id>
   const handleJoinGroup = () => {
     if (groupId) {
       console.log({ groupId });
-      router.push(`/vote/${groupId}`); // Route to the vote page with the entered ID
+      router.push(`/vote/${groupId}`);
+    } else {
+      setIsInputInvalid(true);
+      setIsToastVisible(true);
+      setTimeout(() => setIsInputInvalid(false), 1000); // Reset after animation
     }
   };
 
-  // Handlers for open / close modal
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
 
   return (
     <div className="flex flex-col items-start w-full p-4 max-w-lg mx-auto">
       <div className="flex items-center mb-4 w-full">
-        {/* Text Box */}
         <input
           type="text"
-          placeholder="Enter Group ID"
+          placeholder="Enter Vote ID"
           value={groupId}
-          onChange={(e) => setGroupId(e.target.value)} // Update state on input change
-          className="border rounded-l-md p-2 flex-grow text-black placeholder-gray-400"
+          onChange={(e) => setGroupId(e.target.value)}
+          className={`border rounded-l-md p-2 flex-grow text-black placeholder-gray-400 ${isInputInvalid ? 'input-invalid' : ''}`}
         />
-
-        {/* Join Group Button */}
         <button
-          className="bg-blue-500 text-white p-2 rounded-r-md ml-2"
-          onClick={handleJoinGroup} // Handle button click
+          className="bg-blue-500 text-white p-2 rounded-r-md hover:bg-blue-600 transition ml-2 text-lg font-bold shadow-lg"
+          onClick={handleJoinGroup}
         >
-          Join Group
+          Join Voting Room
         </button>
       </div>
-
-      {/* Create Button */}
       <button 
-        className="bg-green-500 text-white p-2 rounded hover:bg-green-600 transition w-full"
+        className="bg-green-500 text-white p-2 rounded hover:bg-green-600 transition w-full text-lg font-bold shadow-lg"
         onClick={handleOpenModal}
-        >
-        Create Group
+      >
+        Create Voting Room
       </button>
-
-      <VotingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <VotingModal isOpen={isModalOpen} onClose={handleCloseModal} />
+      <Toast 
+        message="Please enter a Vote ID" 
+        isVisible={isToastVisible} 
+        onClose={() => setIsToastVisible(false)} 
+      />
     </div>
   );
-
 }

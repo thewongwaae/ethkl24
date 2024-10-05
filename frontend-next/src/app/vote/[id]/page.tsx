@@ -1,23 +1,3 @@
-// "use client";
-
-// import { useParams } from "next/navigation";
-// import "../../globals.css";
-
-// export default function VotePageRoute() {
-//   const params = useParams();
-//   const id = params.id;
-//   // CHECK VALIDITY OF ID IN DB
-//   // IF VALID, RENDER PAGE
-//   // ELSE, RENDER ERROR PAGE
-
-//   return (
-//     <div>
-//       <h1>Vote Page for ID: {id}</h1>
-//       {/* Add your page content here */}
-//     </div>
-//   );
-// }
-
 "use client";
 
 import { useParams } from "next/navigation";
@@ -45,9 +25,9 @@ export default function VotePageRoute() {
 
   // wrapping this logic inside useEffect ensures the data is fetched after the component has mounted.
   useEffect(() => {
-    const fetchIdea = async () => {
+    const fetchVote = async () => {
       try {
-        const response = await fetch(`/api/fetchIdea`);
+        const response = await fetch(`/api/fetchVote`);
 
         if (response.status === 200) {
           const result = await response.json();
@@ -59,7 +39,7 @@ export default function VotePageRoute() {
         console.error('Error:', error);
       }
     };
-    fetchIdea();
+    fetchVote();
   }, [id]);
 
 
