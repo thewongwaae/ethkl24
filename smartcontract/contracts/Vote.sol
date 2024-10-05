@@ -64,6 +64,7 @@ contract Vote {
 		require(_groupId > 0 && _groupId <= groups.length, "Error: Invalid Group ID");  // Check for valid Group ID
 		require(addressToGroupId[msg.sender] == _groupId, "Error: User not in the specified group");  // Check if user is in the group
 		require(addressToVoteId[msg.sender] == 0, "Error: User has already voted");
+		require(groups[addressToGroupId[msg.sender]].voteOptions.length >= _voteId && _voteId != 0, "Error: invalid vote id");
         addressToVoteId[msg.sender] = _voteId;  // Associate user with the vote ID
 		groups[_groupId].voteOptions[_voteId].voteAmount++;
 
