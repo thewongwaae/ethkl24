@@ -38,7 +38,7 @@ contract Vote {
         return (true, groupId, userGroup.title, userGroup.description);
 	}
 
-	function createGroup(string memory _title, string memory _description, string[] memory optionTitles) public {
+	function createGroup(string memory _title, string memory _description, string[] memory optionTitles) public returns (uint256) {
 		require(bytes(_title).length > 0, "Error: Title cannot be empty");
         require(bytes(_description).length > 0, "Error: Description cannot be empty");
         require(optionTitles.length > 0, "Error: At least one option must be provided");
@@ -59,7 +59,7 @@ contract Vote {
 			newGroup.voteTitle[i] = optionTitles[i];
 		}
 		groups.push(newGroup);
-		groupIdCursor++;
+		return groupIdCursor++;
 	}
 
 	function userJoinGroup(uint256 _groupId) public {
@@ -68,13 +68,14 @@ contract Vote {
         addressToGroupId[msg.sender] = _groupId;  // Associate user with group
 	}
 
-	function castVote(uint256 _voteId, uint256 _groupId) public {
+	function castVote(uint256 _voteId, uint256 _groupId) public returns (uint256) {
 		require(_groupId > 0 && _groupId <= groups.length, "Error: Invalid Group ID");  // Check for valid Group ID
 		require(addressToGroupId[msg.sender] == _groupId, "Error: User not in the specified group");  // Check if user is in the group
 		require(addressToVoteId[msg.sender] == 0, "Error: User has already voted");
 		require(groups[addressToGroupId[msg.sender]].voteAmount.length >= _voteId && _voteId != 0, "Error: invalid vote id");
         addressToVoteId[msg.sender] = _voteId;  // Associate user with the vote ID
 		groups[_groupId].voteAmount[_voteId]++;
+		return (groups[_groupId].voteAmount[_voteId]);
 
 	}
 
@@ -85,6 +86,7 @@ contract Vote {
 		uint256 voteId = addressToVoteId[msg.sender];
 		groups[groupId].voteAmount[voteId]--;
 		delete addressToVoteId[msg.sender];
+		return (groups[groupId].voteAmount[voteId])
 	}
 
 	function getVotes(uint256 _groupId) public view returns (uint256, string[] memory, uint256[] memory) {
