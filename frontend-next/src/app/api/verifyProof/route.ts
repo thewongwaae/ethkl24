@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     //     "nullifier_hash": "0x022de8edbfa1fbb8148fee9c613079d43c6b8c1a1c6b19ba41b67e79a313054d"
     // };
 
-    const response = await fetch('https://developer.worldcoin.org/api/v2/verify/app_staging_169e21f6afc84b304749830067809632', {
+    const response = await fetch('https://developer.worldcoin.org/api/v2/verify/app_0bacff3e92a760f434d07660157f11d4', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

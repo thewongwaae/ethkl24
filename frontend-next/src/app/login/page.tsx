@@ -37,7 +37,7 @@ export default function VerificationPage() {
       <div>
       <Dialog.Root></Dialog.Root>
         <IDKitWidget
-          app_id="app_staging_169e21f6afc84b304749830067809632"
+          app_id="app_0bacff3e92a760f434d07660157f11d4"
           action="verify-user"
           onSuccess={handleSuccess}
           onError={(error) => console.error('Error:', error)}
