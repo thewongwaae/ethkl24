@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
-  const id = 1;
+  const group_id = 1;
   const topic = 'Sample Vote Topic';
   const description = 'This is a sample description for the vote topic.';
   const options = [
@@ -15,5 +15,5 @@ export async function GET(request: NextRequest) {
     }
   ];
 
-  return NextResponse.json({ id, topic, description, options });
+  return NextResponse.json({ group_id, topic, description, options });
 }
