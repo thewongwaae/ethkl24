@@ -8,12 +8,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const optionsArray = options.split(',').map((option: string) => option.trim());
+    const optionsArray = options.split(',').map((option: string) => ({
+      name: option.trim(),
+      votes: 0
+    }));
 
     // Process the data as needed
-    console.log({ title, description, optionsArray });
+    const id = '1';
+    console.log({ id, title, description, optionsArray });
 
-    return NextResponse.json({ title, description, optionsArray }, { status: 200 });
+    return NextResponse.json({ id, title, description, optionsArray }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
   }

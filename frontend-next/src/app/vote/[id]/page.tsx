@@ -3,33 +3,31 @@
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import "../../globals.css";
+import "./styles.css";
 
 interface Option {
   name: string;
-  votes: number; // Add other properties as necessary
+  votes: number;
 }
 
 interface VoteData {
-  group_id: string;
-  topic: string;
+  vote_id: string;
+  title: string;
   description: string;
   options: Option[];
 }
 
-
 export default function VotePageRoute() {
-  const params = useParams();
-  const id = params.id;
-
+  const { id } = useParams();
   const [data, setData] = useState<VoteData | null>(null);
+  const [clickedOption, setClickedOption] = useState<string | null>(null);
 
-  // wrapping this logic inside useEffect ensures the data is fetched after the component has mounted.
   useEffect(() => {
     const fetchVote = async () => {
       try {
         const response = await fetch(`/api/fetchVote`);
 
-        if (response.status === 200) {
+        if (response.ok) {
           const result = await response.json();
           setData(result);
         } else if (response.status === 404) {
@@ -42,36 +40,59 @@ export default function VotePageRoute() {
     fetchVote();
   }, [id]);
 
-
   if (!data) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+      </div>
+    );
   }
-  console.log(data); // test
 
-  const { group_id, topic, description, options } = data
+  const { title, description, options } = data;
 
-  console.log("options", options);
-  console.log(options[0]['name'])
+  const handleClick = (optionName: string) => {
+    if (clickedOption === optionName) return;
+
+    setClickedOption(optionName);
+    setData((prevData) => {
+      if (!prevData) return null;
+
+      const updatedOptions = prevData.options.map((option) => {
+        if (option.name === optionName) {
+          return { ...option, votes: option.votes + 1 };
+        } else if (clickedOption === option.name) {
+          return { ...option, votes: option.votes - 1 };
+        }
+        return option;
+      });
+
+      return { ...prevData, options: updatedOptions };
+    });
+
+    console.log(`Option ${clickedOption} clicked`);
+  };
 
   return (
-    <div>
-      {/* Additional data display */}
-
-      <div> Topic: {topic} </div>
-      <div> Description: {description} </div>
-      <div className="flex flex-row space-x-8">
-        {options.map((option : Option) => (
-          <button
-            key={option.name}
-            className="bg-blue-500 text-white text-lg font-bold py-4 px-8 rounded-lg hover:bg-blue-600 transition duration-300 text-center"
-            type="button"
-            onClick={() => console.log(`Option ${option.name} clicked`)}
-          >
-            {option.name}
-          </button>
-        ))}
+    <div className="flex flex-col justify-center items-center">
+      <div className="shadow-lg rounded-xl p-10 w-full max-w-2xl bg-gray-100">
+        <h1 className="text-4xl font-extrabold mb-6 text-center text-gray-800">{title}</h1>
+        <p className="mb-8 text-center text-gray-600 text-lg">{description}</p>
+        <div className="flex flex-wrap justify-center gap-6">
+          {options.map((option: Option) => (
+            <button
+              key={option.name}
+              className={`bg-blue-500 text-white text-lg font-semibold py-3 px-6 rounded-xl hover:bg-blue-600 transition duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50 ${clickedOption === option.name ? 'bg-green-700 hover:bg-green-800' : 'bg-blue-500 hover:bg-blue-600'} ${clickedOption === option.name ? 'jiggle' : ''}` }
+              type="button"
+              onClick={() => handleClick(option.name)}
+            >
+              <div className="flex flex-col items-center">
+                <div className="mb-1">{option.name}</div>
+                <div className="text-sm text-gray-200">{option.votes} votes</div>
+              </div>
+            </button>
+          ))}
+        </div>
       </div>
-
     </div>
   );
 }

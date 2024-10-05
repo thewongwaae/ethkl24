@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">
+      <body className="antialiased flex flex-col min-h-screen">
         <Header title="Cast Your Vote!" />
         <main className="flex-grow flex items-center justify-center">
           {children}

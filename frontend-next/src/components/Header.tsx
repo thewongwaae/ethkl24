@@ -1,4 +1,3 @@
-// src/components/Header.tsx
 "use client";
 
 import { useCallback } from "react";
@@ -20,7 +19,7 @@ export default function Header({ title }: HeaderProps) {
   }, [router]);
 
   return (
-    <header className="bg-gray-800 text-white p-4 flex items-center justify-between">
+    <header className="bg-gray-800 text-white p-4 flex items-center justify-between relative">
       {/* Home Icon on the left */}
       <button
         className="p-2 rounded hover:bg-gray-700 transition-transform transform hover:scale-110"
@@ -30,15 +29,17 @@ export default function Header({ title }: HeaderProps) {
           <path d="M21 13v10h-6v-6h-6v6h-6v-10h-3l12-12 12 12h-3zm-1-5.907v-5.093h-3v2.093l3 3z"/>
         </svg>
       </button>
-
+  
       {/* Title in the center */}
-      <h1 className="text-2xl font-bold flex-grow text-center">
-        {title}
-      </h1>
-
+      <div className="absolute left-1/2 transform -translate-x-1/2">
+        <h1 className="text-2xl font-bold">
+          {title}
+        </h1>
+      </div>
+  
       {/* Username Section on the right */}
       <h1
-        className="font-bold transition-transform transform hover:scale-110 hover:text-gray-300 cursor-pointer"
+        className="font-bold transition-transform transform hover:scale-110 hover:text-gray-300 cursor-pointer ml-auto"
         onClick={handleUsernameClick}
       >
         Username

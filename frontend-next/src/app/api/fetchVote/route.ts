@@ -12,6 +12,14 @@ export async function GET(request: NextRequest) {
     {
       name: 'Option 2',
       votes: 3
+    },
+    {
+      name: 'Option 3',
+      votes: 3
+    },
+    {
+      name: 'Option 4',
+      votes: 3
     }
   ];
 

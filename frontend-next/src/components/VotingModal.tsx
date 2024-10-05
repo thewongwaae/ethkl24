@@ -12,14 +12,27 @@ export default function VotingModal({ isOpen, onClose }: VotingModalProps) {
   const [description, setDescription] = useState("");
   const [options, setOptions] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log({ title, description, options });
 
-    setTitle("");
-    setDescription("");
-    setOptions("");
-    onClose();
+    const response = await fetch('/api/createVote', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ title, description, options }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log('Vote created successfully:', data);
+      setTitle("");
+      setDescription("");
+      setOptions("");
+      onClose();
+    } else {
+      console.error('Failed to create vote');
+    }
   };
 
   if (!isOpen) return null;
