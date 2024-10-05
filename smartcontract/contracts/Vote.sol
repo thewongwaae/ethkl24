@@ -3,12 +3,13 @@ pragma solidity ^0.8.22;
 
 
 contract Vote {
-	Group[] groups;
-	mapping(address => uint256) addressToGroupId;
-	mapping(address => uint256) addressToVoteId;
-	uint256 groupIdCursor;
+	Group[] public groups;
+	mapping(address => uint256) public addressToGroupId;
+	mapping(address => uint256) public addressToVoteId;
+	uint256 public groupIdCursor;
 
 	struct VoteOption {
+		uint256 voteAmount;
 		uint256 groupId;
 		uint256 voteOptionId;
 		string title;
@@ -41,7 +42,7 @@ contract Vote {
 		VoteOption[] memory newVoteOptions = new VoteOption[](optionTitles.length);
 
 		for (uint256 i = 0; i < optionTitles.length; i++) {
-            newVoteOptions[i] = VoteOption(groupIdCursor, i, optionTitles[i]);
+            newVoteOptions[i] = VoteOption(0, groupIdCursor, i + 1, optionTitles[i]);
         }
 
 		Group memory newGroup = Group({
@@ -55,33 +56,42 @@ contract Vote {
 
 	function userJoinGroup(uint256 _groupId) public {
         require(_groupId > 0 && _groupId <= groups.length, "Error: GroupID invalid");  // Check for valid Group ID
+        require(addressToGroupId[msg.sender] != 0, "Error: User is already in a group");  // Check for valid Group ID
         addressToGroupId[msg.sender] = _groupId;  // Associate user with group
 	}
 
 	function castVote(uint256 _voteId, uint256 _groupId) public {
 		require(_groupId > 0 && _groupId <= groups.length, "Error: Invalid Group ID");  // Check for valid Group ID
 		require(addressToGroupId[msg.sender] == _groupId, "Error: User not in the specified group");  // Check if user is in the group
+		require(addressToVoteId[msg.sender] == 0, "Error: User has already voted");
         addressToVoteId[msg.sender] = _voteId;  // Associate user with the vote ID
+		groups[_groupId].voteOptions[_voteId].voteAmount++;
+
 	}
 
 	function removeVote() public {
 		require(addressToGroupId[msg.sender] != 0, "Error: User not in any group");  // Check if user is in any group
         require(addressToVoteId[msg.sender] != 0, "Error: User has not voted");  // Check if user has voted
-        delete addressToVoteId[msg.sender];
+		uint256 groupId = addressToGroupId[msg.sender];
+		uint256 voteId = addressToVoteId[msg.sender];
+		groups[groupId].voteOptions[voteId].voteAmount--;
+		delete addressToVoteId[msg.sender];
 	}
 
-	function getVotes(uint256 _groupId) view returns (string[] memory) {
+	function getVotes(uint256 _groupId) view returns (string[] memory, uint256[] memory) {
 		require(_groupId > 0 && _groupId <= groups.length, "Error: Invalid Group ID");  // Check for valid Group ID
         require(addressToGroupId[msg.sender] == _groupId, "Error: User not in this group");  // Check if user is in the group
 
         Group storage groupRef = groups[_groupId];  // Adjust for 0-based indexing
         string[] memory voteTitles = new string[](groupRef.voteOptions.length);  // Create array to hold titles
+		uint256[] memory voteAmount = new uint256[](groupRef.voteOptions.length);
 
         for (uint256 i = 0; i < groupRef.voteOptions.length; i++) {
             voteTitles[i] = groupRef.voteOptions[i].title;  // Populate titles array
+			voteAmount[i] = groupRef.voteOptions[i].voteAmount;
         }
 
-        return voteTitles;	
+        return (voteTitles, voteAmounts);	
 	}
 }
 
