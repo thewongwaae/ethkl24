@@ -64,7 +64,6 @@ contract Vote {
 
 	function userJoinGroup(uint256 _groupId) public {
         require(_groupId > 0 && _groupId <= groups.length, "Error: GroupID invalid");  // Check for valid Group ID
-        require(addressToGroupId[msg.sender] != 0, "Error: User is already in a group");  // Check for valid Group ID
         addressToGroupId[msg.sender] = _groupId;  // Associate user with group
 	}
 
