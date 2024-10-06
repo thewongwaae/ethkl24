@@ -24,8 +24,28 @@ contract Vote {
 		string description;
 	}
 
+	uint256[4] vote;
+
 	constructor() {
 		groupIdCursor = 1;
+	}
+
+	function doVote(uint256 _voteId) public returns (uint256[] memory) {
+		vote[_voteId]++;
+		uint256[] memory newVote = new uint256[](4);
+		for (uint256 i = 0; i < 4; i++) {
+			newVote[i] = vote[i];
+		}
+		return (newVote);
+	}
+
+	function dontVote(uint256 _voteId) public returns (uint256[] memory) {
+		vote[_voteId]--;
+		uint256[] memory newVote = new uint256[](4);
+		for (uint256 i = 0; i < 4; i++) {
+			newVote[i] = vote[i];
+		}
+		return (newVote);
 	}
 
 	function isUserInGroup() public view returns (bool, uint256, string memory, string memory) {
