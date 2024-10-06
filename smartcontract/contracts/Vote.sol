@@ -34,7 +34,7 @@ contract Vote {
 		if (groupId == 0) {
 			return (false, 0, "", "");
 		}
-        Group memory userGroup = groups[groupId];
+        Group memory userGroup = groups[groupId-1];
         return (true, groupId, userGroup.title, userGroup.description);
 	}
 
@@ -64,7 +64,7 @@ contract Vote {
 
 	function userJoinGroup(uint256 _groupId) public {
         require(_groupId > 0 && _groupId <= groups.length, "Error: GroupID invalid");  // Check for valid Group ID
-        addressToGroupId[msg.sender] = _groupId;  // Associate user with group
+        addressToGroupId[msg.sender] = _groupId - 1;  // Associate user with group
 	}
 
 	function castVote(uint256 _voteId, uint256 _groupId) public returns (uint256) {
@@ -73,8 +73,8 @@ contract Vote {
 		require(addressToVoteId[msg.sender] == 0, "Error: User has already voted");
 		require(groups[addressToGroupId[msg.sender]].voteAmount.length >= _voteId && _voteId != 0, "Error: invalid vote id");
         addressToVoteId[msg.sender] = _voteId;  // Associate user with the vote ID
-		groups[_groupId].voteAmount[_voteId]++;
-		return (groups[_groupId].voteAmount[_voteId]);
+		groups[_groupId - 1].voteAmount[_voteId]++;
+		return (groups[_groupId - 1].voteAmount[_voteId]);
 
 	}
 
