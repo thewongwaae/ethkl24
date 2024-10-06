@@ -7,19 +7,23 @@ export async function GET(request: NextRequest) {
   const options = [
     {
       name: 'Option 1',
+			id: 1,
       votes: 0
     },
     {
       name: 'Option 2',
-      votes: 3
+			id: 2,
+      votes: 0
     },
     {
       name: 'Option 3',
-      votes: 3
+			id: 3,
+      votes: 0
     },
     {
       name: 'Option 4',
-      votes: 3
+			id: 4,
+      votes: 0
     }
   ];
 

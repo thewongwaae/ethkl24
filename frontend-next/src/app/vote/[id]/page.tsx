@@ -4,9 +4,11 @@ import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import "../../globals.css";
 import "./styles.css";
+import { useWalletContext } from "@/components/wallet";
 
 interface Option {
   name: string;
+  id: number;
   votes: number;
 }
 
@@ -21,6 +23,7 @@ export default function VotePageRoute() {
   const { id } = useParams();
   const [data, setData] = useState<VoteData | null>(null);
   const [clickedOption, setClickedOption] = useState<string | null>(null);
+	const { walletAddress, connectWallet, disconnectWallet, contract } = useWalletContext();
 
   useEffect(() => {
     const fetchVote = async () => {
@@ -50,17 +53,25 @@ export default function VotePageRoute() {
 
   const { title, description, options } = data;
 
-  const handleClick = (optionName: string) => {
-    if (clickedOption === optionName) return;
+  const handleClick = async (optionName: string) => {
+	console.log(contract);
+		// console.log(await contract.isUserInGroup());
+		// await contract.createGroup("test"," tes", ['test']);
+		// await contract.userJoinGroup(1);
+    if (clickedOption) return;
+
 
     setClickedOption(optionName);
+		contract.doVote(1);
     setData((prevData) => {
       if (!prevData) return null;
+
 
       const updatedOptions = prevData.options.map((option) => {
         if (option.name === optionName) {
           return { ...option, votes: option.votes + 1 };
         } else if (clickedOption === option.name) {
+
           return { ...option, votes: option.votes - 1 };
         }
         return option;
